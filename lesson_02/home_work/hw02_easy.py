@@ -10,7 +10,6 @@
 # 2.  банан
 # 3.   киви
 # 4.  арбуз
-
 # Подсказка: воспользоваться методом .format()
 
 fruits = ['яблоко', 'банан', 'киви', 'арбуз']
@@ -18,7 +17,6 @@ for index, value in enumerate(fruits, 1): # https://pythonworld.ru/osnovy/format
     print('{}. {:>6}'.format(index, value)) # :>6 - равнение по правой стороне (6 символов) от самого длинного слова
 
 print("\n")
-
 
 # Задача-2:
 # Даны два произвольные списка.
@@ -30,8 +28,6 @@ res = list(set(arb_str_1) - set(arb_str_2))
 print(res)
 
 print("\n")
-
-
 
 # Задача-3:
 # Дан произвольный список из целых чисел.
@@ -47,4 +43,3 @@ print(lst)
 print("\nРешаем задачу: ")
 n_lst = [i / 4 if i % 2 == 0 else i * 2 for i in lst]
 print(n_lst)
-
