@@ -38,10 +38,6 @@ date = '1.12.1001'
 date = '-2.10.3001'
 """
 
-#from datetime import datetime
-
-
-
 date = '-2.10.3001'
 if len(date) == 10:
     # добавил проверку длины

@@ -50,7 +50,6 @@ print(list_03)
 # например, lst = [1 , 2, 4, 5, 6, 2, 5, 2], нужно получить lst2 = [1, 4, 6]
 # выведите результаты
 
-from itertools import groupby
 lst = [1, 2, 4, 5, 6, 2, 5, 2]
 lst_a = list(set(lst))
 lst_b = [a for a in lst if lst.count(a) == 1]
