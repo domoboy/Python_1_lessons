@@ -37,3 +37,20 @@ date = '01.22.1001'
 date = '1.12.1001'
 date = '-2.10.3001'
 """
+
+#from datetime import datetime
+
+
+
+date = '01.11.1985'
+if len(date) == 10:
+    # добавил проверку длины
+    d_ar = date.split('.')  # "01", "11", "1985"
+    day = int(d_ar[0])
+    month = int(d_ar[1])
+    year = int(d_ar[2])
+    if 1 <= day <= 31 and 1 <= month <= 12 and 1 <= year < 9999:
+        print("Дата введена корректно")
+else:
+    print("Указана неверная дата")
+
