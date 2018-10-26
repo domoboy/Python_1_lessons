@@ -31,3 +31,40 @@
 # Подсказка:
 # Чтобы получить список больших букв русского алфавита:
 # print(list(map(chr, range(ord('А'), ord('Я')+1))))
+
+'''
+Открываем файл на чтение
+менеджеры контекста позволят не делать close https://pythonworld.ru/osnovy/with-as-menedzhery-konteksta.html
+Перебираем фрукты и складываем их в словари ключ буква, хначение список всех соответствующих
+
+половину подсмотрел
+
+'''
+
+list_fruits = tuple(map(chr, range(ord('А'), ord('Я')+1)))
+
+
+def collect_fruits(file):  # функция, которая будет собирать фрукты в словари по алфавиту
+    with open(file, "r", encoding="UTF-8") as x:
+        fruit = []  # Создаю пустой список, куда буду все складывать
+        all_fr = [el_fruit.strip() for el_fruit in x]  # Сначала избавимся от пробелов для всех элементов фруктов
+        all_fr = [el_fruit for el_fruit in all_fr if len(el_fruit)]  # если по длине проходит, то присваиваем элемент
+        for letter in list_fruits:  # для букв из списка фруктов начинаем цикл
+            sort_fruit = [el_fruit for el_fruit in all_fr if letter == el_fruit[0]]  # список по букве
+            if len(sort_fruit):
+                fruit.append({letter: sort_fruit})  # добавляем фрукты в словарь
+
+    return fruit
+
+
+def write_fruits(fruit_list):  # функция, которая будет создавать файл фруктов на определенную букву
+    for el_fruit in fruit_list:
+        for key, value in el_fruit.items():
+            with open("fruit_" + key + ".txt", "w", encoding="UTF-8") as fr_lst_sort:
+
+                fr_lst_sort.write("\n\n".join(value))
+
+
+write_fruits(collect_fruits("lesson_03/home_work/data/fruits.txt"))
+
+# Завелось, только когда указал путь до начала папки, но и все файлы создала в корне, а не в папке data
