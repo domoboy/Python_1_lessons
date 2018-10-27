@@ -1,8 +1,32 @@
+__author__ = 'Коноплянников Николай Иванович'
+
+import re
+
 # Задание-1:
 # Вывести символы в нижнем регистре, которые находятся вокруг
 # 1 или более символов в верхнем регистре.
 # Т.е. из строки "mtMmEZUOmcq" нужно получить ['mt', 'm', 'mcq']
 # Решить задачу двумя способами: с помощью re и без.
+
+str_01 = "mtMmEZUOmcq"
+result = re.findall(r"[a-z]+", str_01)  # строчные разделяем в новый список из вводной строки
+print(result)  # выводим результат
+
+
+# http://pythonz.net/references/named/chr/ - chr(x) превращает в букву
+letter = list(map(lambda x: chr(x), list(range(65, 91))))  # Преобразовал в заглавные от A до Z узнал через ord()
+
+cc = list(str_01)  # сделал список из строки
+
+for i, e in enumerate(cc[:]):  # во времменном списке, для значений и элементов
+    for e2 in letter:  # для элементов в списке заглавных букв
+        if e == e2:  # если элементы соответствуют друг другу
+            cc[i] = " "  # заменяю его на пробел
+
+n_l = "".join(cc).split(" ")  # превращаем в строку созданную из cc разделяя по пустым символам
+# осталось избавится от пустых элементов в списке
+list_lower = [i for i in n_l if i != ""]  # записываю в лист элементы, если они не равны пустому значению ""
+print(list_lower)
 
 
 # Задание-2:
@@ -12,6 +36,11 @@
 # "GAMkgAYEOmHBSQsSUHKvSfbmxULaysmNOGIPHpEMujalpPLNzRWXfwHQqwksrFeipEUlTLec"
 # нужно получить список строк: ['AY', 'NOGI', 'P']
 # Решить задачу двумя способами: с помощью re и без.
+
+
+str_02 = "GAMkgAYEOmHBSQsSUHKvSfbmxULaysmNOGIPHpEMujalpPLNzRWXfwHQqwksrFeipEUlTLec"
+res = re.findall(r"[a-z]{2}([A-Z]+)[A-Z]{2}", str_02)
+print(res)
 
 
 # Задание-3:
