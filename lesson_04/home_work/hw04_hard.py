@@ -12,8 +12,9 @@ matrix = [[1, 0, 8],
 #                  [8, 1, 2]]
 
 # Суть сложности hard: Решите задачу в одну строку
+# https://stackoverflow.com/questions/8421337/rotating-a-two-dimensional-array-in-python
 
-matrix_rotate = zip(*matrix[::+1])
+matrix_rotate = zip(*matrix)  # порядок менять не надо
 
 print(*matrix_rotate)  # интересно, а этот принт и входные данные считаются как отдельные строки?
 
