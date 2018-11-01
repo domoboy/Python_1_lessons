@@ -5,15 +5,15 @@
 
 import sys
 import os
-import delete_directory as dld
+# import h_w_5.create_directory as crt  # подключить для создания директорий
+import h_w_5.delete_directory as dld  # подключить для удаления директорий
+
 
 os.chdir(os.path.dirname(sys.argv[0]))
 
-# delete_directory.del_directory('dir_')
+# crt.create_dir('dir_')  # выполняет создание директорий
 
-
-print('os.getcwd = ', os.getcwd())
-print('sys.argv = ', sys.argv)
+dld.del_directory('dir_')  # выполняет удаление директорий
 
 
 # Задача-2:
