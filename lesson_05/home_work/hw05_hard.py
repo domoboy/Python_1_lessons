@@ -63,7 +63,7 @@ def copyfile():  # копирует файл
         print('Необходимо указать имя файла вторым параметром')
         return
     try:
-        new = file_name + '_copy'
+        new = 'copy_' + file_name
         shutil.copy(file_name, new)
         if os.path.exists(new):
             print('Файл {} успешно создан'.format(new))
@@ -140,3 +140,13 @@ if key:
     else:
         print("Задан неверный ключ")
         print("Укажите ключ help для получения справки")
+
+
+#  Для скорости:
+# python3 hw05_hard.py help
+# python3 hw05_hard.py mkdir +директория
+# python3 hw05_hard.py ping
+# python3 hw05_hard.py cp +файл
+# python3 hw05_hard.py rm +файл
+# python3 hw05_hard.py cd +директория
+# python3 hw05_hard.py ls
