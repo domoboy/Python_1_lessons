@@ -31,3 +31,18 @@ def create_dir(my_name):
         print('Создать директорию {} не удалось'.format(dir_path))
 
 
+
+
+# import h_w_5.create_directory as crt  # подключить для создания директорий
+# import h_w_5.delete_directory as dld  # подключить для удаления директорий
+# os.chdir(os.path.dirname(sys.argv[0]))
+# crt.create_dir('dir_')  # выполняет создание директорий
+# dld.del_directory('dir_')  # выполняет удаление директорий
+
+# def folder_contents():
+#     contents = [os.listdir()]
+#     print(contents)
+#
+# folder_contents()
+
+
