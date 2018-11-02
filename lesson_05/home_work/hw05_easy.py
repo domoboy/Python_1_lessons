@@ -5,21 +5,44 @@
 
 import sys
 import os
-# import h_w_5.create_directory as crt  # подключить для создания директорий
-import h_w_5.delete_directory as dld  # подключить для удаления директорий
+import shutil
 
+os.chdir(os.path.dirname(sys.argv[0]))  # меняю рабочую директорию на ту, где лежит файл
 
-os.chdir(os.path.dirname(sys.argv[0]))
+dir_path = os.path.join(os.getcwd(), 'dir_')  # os.path.join совмещение путей
 
-# crt.create_dir('dir_')  # выполняет создание директорий
+# 1.а - Создание директорий
 
-dld.del_directory('dir_')  # выполняет удаление директорий
+try:
+    for i in range(1, 10):
+        os.mkdir(dir_path + str(i))
+
+except FileExistsError:
+    print('Такая директория уже существует')
+
+except OSError:
+    print('Создать директорию {} не удалось'.format(dir_path))
+
+# 1.b - Удаление созданных директорий
+
+try:
+    for i in range(1, 10):
+        os.rmdir(dir_path + str(i))
+
+except OSError:
+    print('Нельзя удалить то, чего не существует')
 
 
 # Задача-2:
 # Напишите скрипт, отображающий папки текущей директории.
 
+print(os.listdir(path="."))
+
 
 # Задача-3:
 # Напишите скрипт, создающий копию файла, из которого запущен данный скрипт.
+
+shutil.copy('hw05_easy.py', 'copy_hw05_easy.py', follow_symlinks=True)
+
+print(sys.argv[0])
 
