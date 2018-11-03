@@ -49,6 +49,16 @@ except OSError:
 
 print(os.listdir("."))
 
+
+import os
+def list_current_dir():
+    elems = os.listdir(os.getswd())
+    for elem in elems:
+        if os.path.isdir(elem):
+            print(elem)
+            
+# list_current_dir()
+
 '''
 
 # Задача-3:
@@ -56,6 +66,6 @@ print(os.listdir("."))
 
 '''
 
-shutil.copy('hw05_easy.py', 'copy_hw05_easy.py', follow_symlinks=True)
+shutil.copy(sys.argv[0], os.path.join(os.getcwd()), 'copy.py')
 
 '''
