@@ -11,19 +11,6 @@
 # Реализуйте классы сотрудников так, чтобы на вход функции-конструктора
 # каждый работник получал строку из файла
 
-
-# class Workers:
-#
-#     def __init__(self, name, surname, position, wage, hour_rate, worked_out):
-#         self.name = name  # имя сотрудника
-#         self.surname = surname # фамилия сотрудника
-#         self.position = position  # должность
-#         self.wage = wage  # заработная плата
-#         self.hour_rate = hour_rate  # норма часов
-#         self.worked_out = worked_out  # отработано часов
-#
-#     def list_pay(self):
-
 import os
 import sys
 
@@ -33,7 +20,7 @@ os.chdir(os.path.dirname(sys.argv[0]))  # меняю рабочую директ
 class Worker:
     def __init__(self, stringFromFile):
         elems = stringFromFile.split()
-        print(elems)
+        # print(elems)  # для проверки, для себя
         self.name = elems[0]  # имя сотрудника
         self.surname = elems[1]  # фамилия сотрудника
         self.position = elems[3]  # должность
@@ -42,9 +29,9 @@ class Worker:
         self.worked_out = 0
         self.payment = 0
 
-    def calc_pay(self, worked_out):
+    def calc_pay(self, worked_out):  # функция в которой происходит расчет зп
         self.worked_out = worked_out
-        h_pay = int(self.wage / self.hour_rate)
+        h_pay = int(self.wage / self.hour_rate)  # сколько стоит час работы
 
         if worked_out == self.hour_rate:
             self.payment = self.wage
@@ -56,7 +43,8 @@ class Worker:
         return self.payment
 
     def dump(self):
-        print(self.surname, self.name, self.worked_out, self.payment)
+        print('{} компании {} {} отработал {} часов, и поэтому он получит {} руб.'\
+              .format(self.position, self.surname, self.name, self.worked_out, self.payment))
 
 
 personal = []
