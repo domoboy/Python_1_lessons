@@ -37,10 +37,17 @@
 class School:
 
     def __init__(self):
-        self.classroom = classroom  # класс
-        self.school_object = school_subject  # школьный предмет
-        self.student = Student.full_name
-        self.teacher = Teacher.full_name
+        # self.classroom = classroom  # класс
+        # self.school_object = school_subject  # школьный предмет
+        self.students = []
+        self.teachers = []
+
+    def add_teacher(self, new_teacher):
+        self.teachers.append(new_teacher)
+
+    def print_teachers(self):
+        for teacher in self.teachers:
+            print(teacher.what_teaches())
 
 
 class Person:
@@ -50,17 +57,17 @@ class Person:
         self.patronymic = patronymic  # отчество
         self.surname = surname  # фамилия
 
-    def full_name(self):  # получаю строку с полным ФИО
+    def full_name(self):  # получаю строку с полным ФИО в формате Фамилия И. О.
         return self.surname + ' ' + self.name[:1] + '. ' + self.patronymic[:1] + '.'
+
+    def fullname_big(self):  # возвращает ФИО  в полном формате Фамилия Имя Отчество
+        return self.surname + ' ' + self.name + ' ' + self.patronymic
 
 
 class Student(Person):
 
     def __init__(self, name, patronymic, surname, mom, dad):
         Person.__init__(self, name, patronymic, surname)
-        self.name = name
-        self.surname = surname
-        self.patronymic = patronymic
         self.mom = mom
         self.dad = dad
 
@@ -75,7 +82,7 @@ class Teacher(Person):
         self.class_object = class_object
 
     def what_teaches(self):
-        return '{} это предмет, который преподает {}'.format(self.class_object.title(), Teacher.full_name(teacher))
+        return '{} это предмет, который преподает {}'.format(self.class_object.title(), Teacher.fullname_big(teacher))
 
 
 students = [Student('Иван', 'Иванович', 'Иванов', 'Иванова Ангелина Тарасовна', 'Иванов Иван Петрович'),
@@ -106,12 +113,15 @@ teachers = [Teacher('Матвеев', 'Иван', 'Герасимович', 'м�
             Teacher('Тарасова', 'Анна', 'Ивановна', 'русский язык'),
             ]
 
+# for student in students:
+#     print(Student.get_parents(student))
 
-for student in students:
-    print(Student.get_parents(student))
+school = School()
 
 for teacher in teachers:
-    print(Teacher.what_teaches(teacher))
+    school.add_teacher(teacher)
+
+school.print_teachers()
 
 '''
 1. Имя
