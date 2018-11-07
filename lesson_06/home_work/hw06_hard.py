@@ -18,9 +18,10 @@ os.chdir(os.path.dirname(sys.argv[0]))  # меняю рабочую директ
 
 
 class Worker:
-    def __init__(self, stringFromFile):
-        elems = stringFromFile.split()
-        # print(elems)  # для проверки, для себя
+    def __init__(self, string_from_file):
+
+        elems = string_from_file.split()
+
         self.name = elems[0]  # имя сотрудника
         self.surname = elems[1]  # фамилия сотрудника
         self.position = elems[3]  # должность
@@ -44,7 +45,7 @@ class Worker:
 
     def dump(self):
         print('{} компании {} {} отработал {} часов, и поэтому он получит {} руб.'\
-              .format(self.position, self.surname, self.name, self.worked_out, self.payment))
+              .format(self.position.title(), self.surname, self.name, self.worked_out, self.payment))
 
 
 personal = []
@@ -62,6 +63,7 @@ with open('data/workers', encoding='UTF-8') as lister:
         i += 1
 
 
+# здесь разбираю второй файл, сначала разделяю на строки, потом работаю с элементами строк (забрал из hw3_hard)
 def tolist(path):
     with open(path, encoding='UTF-8') as lister:
         nlist = [elems for elems in lister]
@@ -76,7 +78,5 @@ for i, data in enumerate(hours_of):
     if i == 0: continue
     p = list(filter(lambda x: x.name == data[0] and x.surname == data[1], personal))[0]
 
-    p.calc_pay(int(data[2]))
+    p.calc_pay(int(data[2]))  # значение которое будет принимать функция calc_pay в качестве worked_out
     p.dump()
-
-# осталось причесать.
