@@ -49,6 +49,14 @@ class School:
         for teacher in self.teachers:
             print(teacher.what_teaches())
 
+    def add_student(self, new_student):
+        self.students.append(new_student)
+
+    def print_students(self):
+        for student in self.students:
+            print(student.get_parents())
+
+
 
 class Person:
 
@@ -113,15 +121,17 @@ teachers = [Teacher('Матвеев', 'Иван', 'Герасимович', 'м�
             Teacher('Тарасова', 'Анна', 'Ивановна', 'русский язык'),
             ]
 
-# for student in students:
-#     print(Student.get_parents(student))
 
 school = School()
 
 for teacher in teachers:
     school.add_teacher(teacher)
 
+for student in students:
+    school.add_student(student)
+
 school.print_teachers()
+# school.print_students()
 
 '''
 1. Имя
