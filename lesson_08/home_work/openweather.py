@@ -1,3 +1,65 @@
+import os
+import sys
+import json
+import requests
+
+os.chdir(os.path.dirname(sys.argv[0]))  # без назначения рабочей директории мой pycharm отказывается работать
+sity = input('Введите город, в котором вы желаете узнать температуру')
+
+
+def get_api_key():
+    """ Функция получения API KEI из файла app.id"""
+    with open('app.id') as file:
+        k = file.read()
+    return k
+
+
+def get_id_city():
+    """ Функция получает ID города. В этой версии только первый результат TODO сделать выгрузку всех городов для выбора
+        http://api.openweathermap.org/data/2.5/find?q=Moscow&type=like&units=metric&APPID=00a17ec7faa055c0bfeeb990c2fd2f4a
+    """
+    res = requests.get('http://api.openweathermap.org/data/2.5/find', params={'q': sity, 'type': 'like',
+                                                                              'units': 'metric', 'APPID': get_api_key()})
+    data = res.json()
+    # cities = ['{} ({})'.format(d['name'], d['sys']['country']) for d in data['list']]
+    # print('City: ', cities)
+    city_id = data['list'][0]['id']  # забираю только первое значение ID
+    return city_id
+
+
+print(get_id_city())
+
+
+def get_weather_value():
+    """ Функция получает значение погоды по ID города, например Moscow, RU id= 524901
+        http://api.openweathermap.org/data/2.5/weather?id=524901&units=metric&appid=00a17ec7faa055c0bfeeb990c2fd2f4a
+    """
+    res = requests.get('http://api.openweathermap.org/data/2.5/weather', params={'id': get_id_city(), 'units': 'metric',
+                                                                                 'appid': get_api_key()})
+    data_w = res.json()
+    temperature = data_w['main']['temp']  # текущая температура
+    return temperature
+
+
+print(get_weather_value())
+
+
+def create_database():
+    """ Функция создает пустую базу данных
+
+        Погода
+            id_города           INTEGER PRIMARY KEY
+            Город               VARCHAR(255)
+            Дата                DATE
+            Температура         INTEGER
+            id_погоды           INTEGER                 # weather.id из JSON-данных
+    """
+    pass
+
+# TODO надо проверить, есть ли файл и база данных перед выполнением функций связанных с обработкой и скачиванием файлов
+# TODO запросить у пользователя Город, в котором он хочет получить погоду
+# TODO проверить наличие городов в БД, если нет, добавить в БД, если есть проверить дату и обновить данные на актуальные
+
 
 """
 == OpenWeatherMap ==
@@ -122,4 +184,36 @@ OpenWeatherMap — онлайн-сервис, который предостав�
         ...
 
 """
+# НЕДОДЕЛАННАЯ ЗАГОТОВКА ПОЛУЧЕНИЯ ПОГОДЫ ПРИ ПОМОЩИ БИБЛИОТЕКИ PYOWM
+
+# import pyowm  # можно было бы и так получить погоду в нужном городе
+#
+# owm = pyowm.OWM(key_owm[0], language='ru')
+#
+# observation = owm.weather_at_place(sity)  # здесь передаю данные по городу
+# w = observation.get_weather()  # здесь забираю из полученных данных только данные о погоде
+#
+# temperature = w.get_temperature('celsius')['temp']  # здесь говорю, что мне надо только температуру в данный момент C'
+#
+# i_d = owm.city_id_registry()  # здесь получаю данные по ID городов
+# d = i_d.ids_for(sity)  # здесь спрашиваю, какие ID вообще есть у городов
+#
+# cities_list = [x[2] for x in d]  # здесь у меня только значения стран
+# list_id = [x[0] for x in d]  # это id из листа
+#
+# print(cities_list)
+# print(d[1][0])
+# temper_at_id = d[1][0]
+# my_c = owm.weather_at_id(temper_at_id)
+# dd = my_c.get_temperature('celsius'['temp'])
+#
+# print(dd)
+
+# my_sity = d[1][0]  # получаю ID моего города (просто знаю что ру)
+#
+# print(my_sity)
+# print(i_d)
+# print(d)
+# print('Текущая температура в {} составляет {} градусов по Цельсию'.format(sity, temperature))
+# print(w)
 
