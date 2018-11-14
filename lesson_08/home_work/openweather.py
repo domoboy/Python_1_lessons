@@ -1,7 +1,7 @@
 import os
 import sys
-import json
 import requests
+import sqlite3
 
 os.chdir(os.path.dirname(sys.argv[0]))  # без назначения рабочей директории мой pycharm отказывается работать
 sity = input('Введите город, в котором вы желаете узнать температуру')
@@ -27,39 +27,75 @@ def get_id_city():
     return city_id
 
 
-print(get_id_city())
+# print('City ID = ', get_id_city())
 
 
 def get_weather_value():
-    """ Функция получает значение погоды по ID города, например Moscow, RU id= 524901
+    """ Функция получает значение погоды, ее ID и время по ID города, например Moscow, RU id= 524901
         http://api.openweathermap.org/data/2.5/weather?id=524901&units=metric&appid=00a17ec7faa055c0bfeeb990c2fd2f4a
     """
     res = requests.get('http://api.openweathermap.org/data/2.5/weather', params={'id': get_id_city(), 'units': 'metric',
                                                                                  'appid': get_api_key()})
     data_w = res.json()
+
     temperature = data_w['main']['temp']  # текущая температура
-    return temperature
+    id_weather = data_w['weather'][0]['id']  # id_погоды
+    data_weather = data_w['dt']  # дата получения погоды
+
+    weather = [(get_id_city(), sity, data_weather, temperature, id_weather)]
+
+    return weather
 
 
-print(get_weather_value())
+# print('Список данных для таблицы = ', get_weather_value())
 
 
 def create_database():
     """ Функция создает пустую базу данных
-
         Погода
             id_города           INTEGER PRIMARY KEY
             Город               VARCHAR(255)
             Дата                DATE
             Температура         INTEGER
             id_погоды           INTEGER                 # weather.id из JSON-данных
+        Производится проверка, если БД нет, то создается новая, если есть, получаю данные из таблицы и сравниваю по ID
+        и дате существует ли запись, если запись не совпадает с той, которую получил от сервера перезаписываю
     """
-    pass
+    conn = sqlite3.connect("geek_owm.db")
+    cursor = conn.cursor()
 
-# TODO надо проверить, есть ли файл и база данных перед выполнением функций связанных с обработкой и скачиванием файлов
-# TODO запросить у пользователя Город, в котором он хочет получить погоду
-# TODO проверить наличие городов в БД, если нет, добавить в БД, если есть проверить дату и обновить данные на актуальные
+    try:  # проверка на наличие таблицы
+        cursor.execute('''CREATE TABLE weather (id_города INTEGER PRIMARY KEY, Город VARCHAR(255), Дата DATE,
+                         Температура INTEGER, id_погоды INTEGER)''')
+        conn.commit()
+        cursor.executemany('INSERT INTO weather VALUES (?, ?, ?, ?, ?)', get_weather_value())
+        conn.commit()
 
+    except:  # если база есть
+        try:  # проверка наличия записи о городе
+            cursor.executemany('INSERT INTO weather VALUES (?, ?, ?, ?, ?)', get_weather_value())
+            conn.commit()
+
+        except:  # работаем с базой, проверяем изменилась ли дата, если да, записываем новое значение температуры
+            check_value_t = 'SELECT * FROM weather WHERE id_города =?'
+            cursor.execute(check_value_t, [(str(get_weather_value()[0][0]))])
+            k = cursor.fetchall()
+            # print('1', get_weather_value()[0][2])
+            # print('2', k[0][2])
+            if get_weather_value()[0][2] != k[0][2]:
+                cursor.execute("""REPLACE INTO weather (id_города, Город, Дата, Температура, id_погоды) VALUES
+                                 (?, ?, ?, ?, ?)""", get_weather_value())
+                conn.commit()
+                print('Запись обновлена')
+    sql = "SELECT * FROM weather WHERE id_города=?"
+    cursor.execute(sql, [(str(get_id_city()))])
+    s = cursor.fetchall()
+    print(s)
+    print('Добавил запись в базу данных')
+    conn.close()
+
+
+create_database()
 
 """
 == OpenWeatherMap ==
